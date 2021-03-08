@@ -47,11 +47,12 @@ public class CarController : MonoBehaviour
         rearRightCollider.brakeTorque = breakForce;
     }
 
+    float breakButtonValue;
     public void OnBreak(InputValue value)
     {
-        float breakValue = value.Get<float>();
+        breakButtonValue = value.Get<float>();
 
-        if(breakValue == 1)
+        if(breakButtonValue == 1)
         {
             isBreaking = true;
         }
