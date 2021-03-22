@@ -8,6 +8,7 @@ public class CarController : MonoBehaviour
     private Vector2 moveVec;
     private float currentSteerAngle;
     private bool isBreaking;
+    private float currentBreakForce;
 
     [SerializeField] private float motorForce;
     [SerializeField] private float breakForce;
@@ -34,18 +35,23 @@ public class CarController : MonoBehaviour
     {
         frontLeftCollider.motorTorque = moveVec.y * motorForce;
         frontRightCollider.motorTorque = moveVec.y * motorForce;
+        ApplyBreaking();
         if (isBreaking)
         {
-            ApplyBreaking();
+            currentBreakForce = breakForce;
+        }
+        else
+        {
+            currentBreakForce = 0;
         }
     }
 
     private void ApplyBreaking()
     {
-        frontLeftCollider.brakeTorque = breakForce;
-        frontRightCollider.brakeTorque = breakForce;
-        rearLeftCollider.brakeTorque = breakForce;
-        rearRightCollider.brakeTorque = breakForce;
+        frontLeftCollider.brakeTorque = currentBreakForce;
+        frontRightCollider.brakeTorque = currentBreakForce;
+        rearLeftCollider.brakeTorque = currentBreakForce;
+        rearRightCollider.brakeTorque = currentBreakForce;
     }
 
     float breakButtonValue;
