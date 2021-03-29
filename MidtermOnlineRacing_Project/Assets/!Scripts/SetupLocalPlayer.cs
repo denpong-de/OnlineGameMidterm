@@ -29,9 +29,6 @@ public class SetupLocalPlayer : NetworkBehaviour
     //Particle
     public GameObject particle;
 
-    //ReturnButton
-    public GameObject returnButton;
-
 
     private void Awake()
     {
@@ -41,8 +38,6 @@ public class SetupLocalPlayer : NetworkBehaviour
         nameLable.transform.SetParent(mainCanvas.transform);
 
         timerLable = GameObject.Find("pTimer Text").GetComponent<Text>();
-
-        returnButton = GameObject.FindGameObjectWithTag("RestartButton");
     }
 
     // Start is called before the first frame update
@@ -62,7 +57,6 @@ public class SetupLocalPlayer : NetworkBehaviour
             GetComponent<Timer>().enabled = false;
         }
 
-        returnButton.SetActive(false);
     }
 
     // Update is called once per frame
@@ -165,8 +159,6 @@ public class SetupLocalPlayer : NetworkBehaviour
                 this.SendMessage("Finnish");
 
                 CmdPlayerTimer(Timer.time);
-
-                returnButton.SetActive(true);
             }
         }
         else if(other.tag == "Respawn" && isLocalPlayer){
