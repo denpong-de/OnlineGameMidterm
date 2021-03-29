@@ -19,6 +19,9 @@ public class SetupLocalPlayer : NetworkBehaviour
     private Text timerLable;
     public string pTimer = "player";
 
+    //CheckPoint
+    private bool isCheckPoint = false;
+
     private void Awake()
     {
         mainCanvas = GameObject.FindWithTag("MainCanvas");
@@ -96,15 +99,33 @@ public class SetupLocalPlayer : NetworkBehaviour
         timerLable.text += pName + ": " + pTimer + "\n";
     }
 
-    void UpdateStates()
+    //Collision
+    private void OnTriggerEnter(Collider other)
     {
-        OnChangeName(pName);
+        if (other.tag == "Finish" && isLocalPlayer)
+        {
+            if (isCheckPoint)
+            {
+                this.SendMessage("Finnish");
+
+                CmdPlayerTimer(Timer.time);
+            }
+        }
+        else if(other.tag == "Respawn" && isLocalPlayer){
+            isCheckPoint = true;
+        }
     }
 
+    //Client State
     public override void OnStartClient()
     {
         base.OnStartClient();
         Invoke("UpdateStates", 1);
+    }
+
+    void UpdateStates()
+    {
+        OnChangeName(pName);
     }
 
     public void OnDestroy()
@@ -112,16 +133,6 @@ public class SetupLocalPlayer : NetworkBehaviour
         if (nameLable != null)
         {
             Destroy(nameLable.gameObject);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Finish" && isLocalPlayer)
-        {
-            this.SendMessage("Finnish");
-
-            CmdPlayerTimer(Timer.time);
         }
     }
 }
