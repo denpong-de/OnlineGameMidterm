@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
+    public static string time;
+
     public Text timerText;
     private float startTime;
     private bool finished = false;
@@ -24,8 +26,9 @@ public class Timer : MonoBehaviour
 
             string minutes = ((int)t / 60).ToString();
             string seconds = (t % 60).ToString("f2");
+            time = minutes + ":" + seconds;
 
-            timerText.text = minutes + ":" + seconds;
+            timerText.text = time;
         }
     }
 

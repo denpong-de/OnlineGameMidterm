@@ -438,10 +438,10 @@ GameObject:
   - component: {fileID: 6093488168946376035}
   - component: {fileID: 6093488168946376039}
   - component: {fileID: 2281057573996436182}
+  - component: {fileID: 1846211398543666963}
   - component: {fileID: 6093488168946376041}
   - component: {fileID: 4023304088025311434}
   - component: {fileID: 2666199759513886254}
-  - component: {fileID: 1846211398543666963}
   - component: {fileID: 6589324330558708060}
   - component: {fileID: 3694789623767086782}
   - component: {fileID: 4186706411716035881}
@@ -536,6 +536,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 0}
+--- !u!114 &1846211398543666963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6093488168946376034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b953673813e7f4b8c8d2af94bfc9bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  namePrefab: {fileID: 7709631566437737361, guid: ea4a3ed0a0d206f47a0ffcd5d9b6a7a3, type: 3}
+  namePos: {fileID: 7149951541179699203}
+  pName: player
+  timerPrefab: {fileID: 5082351297451549294, guid: e7cc4393f156fa944b53b5c15b98d97d, type: 3}
+  pTimer: player
 --- !u!114 &6093488168946376041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,21 +638,6 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &1846211398543666963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6093488168946376034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3b953673813e7f4b8c8d2af94bfc9bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  namePrefab: {fileID: 7709631566437737361, guid: ea4a3ed0a0d206f47a0ffcd5d9b6a7a3, type: 3}
-  namePos: {fileID: 7149951541179699203}
-  pName: player
 --- !u!114 &6589324330558708060
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,18 +6,27 @@ using UnityEngine.UI;
 
 public class SetupLocalPlayer : NetworkBehaviour
 {
+    GameObject mainCanvas;
+
+    //Name
     public Text namePrefab;
     public Transform namePos;
     private Text nameLable;
     [SyncVar(hook = "OnChangeName")]
     public string pName = "player";
 
+    //Timer
+    private Text timerLable;
+    public string pTimer = "player";
+
     private void Awake()
     {
-        GameObject mainCanvas = GameObject.FindWithTag("MainCanvas");
+        mainCanvas = GameObject.FindWithTag("MainCanvas");
 
         nameLable = Instantiate(namePrefab, Vector3.zero, Quaternion.identity) as Text;
         nameLable.transform.SetParent(mainCanvas.transform);
+
+        timerLable = GameObject.Find("pTimer Text").GetComponent<Text>();
     }
 
     // Start is called before the first frame update
@@ -55,6 +64,7 @@ public class SetupLocalPlayer : NetworkBehaviour
         }
     }
 
+    //Name
     [Command]
     public void CmdChangeName(string newName)
     {
@@ -66,6 +76,24 @@ public class SetupLocalPlayer : NetworkBehaviour
     {
         pName = n;
         nameLable.text = pName;
+    }
+
+    //Timer
+    [Command]
+    public void CmdPlayerTimer(string time)
+    {
+        pTimer = time;
+        timerLable.text += pName + ": "+ pTimer + "\n";
+
+        RpcPlayerTimer(pTimer);
+    }
+
+    [ClientRpc]
+    void RpcPlayerTimer(string t)
+    {
+        if (isServer) return;
+        pTimer = t;
+        timerLable.text += pName + ": " + pTimer + "\n";
     }
 
     void UpdateStates()
@@ -89,9 +117,11 @@ public class SetupLocalPlayer : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Finish")
+        if(other.tag == "Finish" && isLocalPlayer)
         {
             this.SendMessage("Finnish");
+
+            CmdPlayerTimer(Timer.time);
         }
     }
 }
