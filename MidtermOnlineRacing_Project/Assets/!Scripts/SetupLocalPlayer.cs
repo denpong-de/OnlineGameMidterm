@@ -11,6 +11,7 @@ public class SetupLocalPlayer : NetworkBehaviour
         if (isLocalPlayer)
         {
             GetComponent<CarController>().enabled = true;
+            CameraController.camPos = this.transform.GetChild(2).gameObject;
             CameraController.player = this.gameObject;
         }
         else
