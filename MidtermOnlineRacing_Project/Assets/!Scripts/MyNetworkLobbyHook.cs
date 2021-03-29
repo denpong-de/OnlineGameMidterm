@@ -10,5 +10,6 @@ public class MyNetworkLobbyHook : LobbyHook
         LobbyPlayer lobby = lobbyPlayer.GetComponent<LobbyPlayer>();
         SetupLocalPlayer actualPlayer = gamePlayer.GetComponent<SetupLocalPlayer>();
         actualPlayer.pName = lobby.playerName;
+        actualPlayer.pColor = lobby.playerColor;
     }
 }

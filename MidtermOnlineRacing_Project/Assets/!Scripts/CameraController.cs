@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour
 {
@@ -45,5 +46,10 @@ public class CameraController : MonoBehaviour
         Vector3 velocity = Vector3.zero;
         transform.position = Vector3.SmoothDamp(transform.position, camPos.transform.position, ref velocity, smoothTime * Time.deltaTime);
         transform.LookAt(player.transform);
+    }
+
+    public void ReturnLobby()
+    {
+        SceneManager.LoadScene(0);
     }
 }

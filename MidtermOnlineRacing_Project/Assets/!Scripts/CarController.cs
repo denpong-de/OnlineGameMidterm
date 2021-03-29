@@ -7,8 +7,10 @@ public class CarController : MonoBehaviour
 {
     private Vector2 moveVec;
     private float currentSteerAngle;
-    private bool isBreaking;
+    public static bool isBreaking;
     private float currentBreakForce;
+
+    public static bool isMoving;
 
     [SerializeField] private float motorForce;
     [SerializeField] private float breakForce;
@@ -39,17 +41,45 @@ public class CarController : MonoBehaviour
         if (isBreaking)
         {
             currentBreakForce = breakForce;
+
+            WheelFrictionCurve lfFriction = rearLeftCollider.forwardFriction;
+            lfFriction.stiffness = 0.5f;
+            rearLeftCollider.forwardFriction = lfFriction;
+            WheelFrictionCurve lsFriction = rearLeftCollider.sidewaysFriction;
+            lsFriction.stiffness = 0.5f;
+            rearLeftCollider.sidewaysFriction = lsFriction;
+
+            WheelFrictionCurve rfFriction = rearRightCollider.forwardFriction;
+            rfFriction.stiffness = 0.5f;
+            rearRightCollider.forwardFriction = rfFriction;
+            WheelFrictionCurve rsFriction = rearRightCollider.sidewaysFriction;
+            rsFriction.stiffness = 0.5f;
+            rearRightCollider.sidewaysFriction = rsFriction;
         }
         else
         {
             currentBreakForce = 0;
+
+            WheelFrictionCurve lfFriction = rearLeftCollider.forwardFriction;
+            lfFriction.stiffness = 1f;
+            rearLeftCollider.forwardFriction = lfFriction;
+            WheelFrictionCurve lsFriction = rearLeftCollider.sidewaysFriction;
+            lsFriction.stiffness = 1f;
+            rearLeftCollider.sidewaysFriction = lsFriction;
+
+            WheelFrictionCurve rfFriction = rearRightCollider.forwardFriction;
+            rfFriction.stiffness = 1f;
+            rearRightCollider.forwardFriction = rfFriction;
+            WheelFrictionCurve rsFriction = rearRightCollider.sidewaysFriction;
+            rsFriction.stiffness = 1f;
+            rearRightCollider.sidewaysFriction = rsFriction;
         }
     }
 
     private void ApplyBreaking()
     {
-        //frontLeftCollider.brakeTorque = currentBreakForce;
-        //frontRightCollider.brakeTorque = currentBreakForce;
+        frontLeftCollider.brakeTorque = currentBreakForce;
+        frontRightCollider.brakeTorque = currentBreakForce;
         rearLeftCollider.brakeTorque = currentBreakForce;
         rearRightCollider.brakeTorque = currentBreakForce;
     }

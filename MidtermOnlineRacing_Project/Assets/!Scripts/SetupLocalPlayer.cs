@@ -15,12 +15,23 @@ public class SetupLocalPlayer : NetworkBehaviour
     [SyncVar(hook = "OnChangeName")]
     public string pName = "player";
 
+    //Color
+    [SyncVar(hook = "OnChangeColor")]
+    public Color pColor;
+
     //Timer
     private Text timerLable;
     public string pTimer = "player";
 
     //CheckPoint
     private bool isCheckPoint = false;
+
+    //Particle
+    public GameObject particle;
+
+    //ReturnButton
+    public GameObject returnButton;
+
 
     private void Awake()
     {
@@ -30,6 +41,8 @@ public class SetupLocalPlayer : NetworkBehaviour
         nameLable.transform.SetParent(mainCanvas.transform);
 
         timerLable = GameObject.Find("pTimer Text").GetComponent<Text>();
+
+        returnButton = GameObject.FindGameObjectWithTag("RestartButton");
     }
 
     // Start is called before the first frame update
@@ -48,6 +61,8 @@ public class SetupLocalPlayer : NetworkBehaviour
             GetComponent<CarController>().enabled = false;
             GetComponent<Timer>().enabled = false;
         }
+
+        returnButton.SetActive(false);
     }
 
     // Update is called once per frame
@@ -65,6 +80,12 @@ public class SetupLocalPlayer : NetworkBehaviour
         {
             nameLable.transform.position = new Vector3(-1000, -1000, 0);
         }
+
+        if (CarController.isBreaking && isLocalPlayer)
+        {
+            CmdSpawnParticle();
+            Debug.Log("Break");
+        }
     }
 
     //Name
@@ -79,6 +100,24 @@ public class SetupLocalPlayer : NetworkBehaviour
     {
         pName = n;
         nameLable.text = pName;
+    }
+
+    //Color
+    [Command]
+    void CmdChangeColor(Color color)
+    {
+        pColor = color;
+    }
+
+    void OnChangeColor(Color c)
+    {
+        pColor = c;
+
+        Renderer[] rends = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rends)
+        {
+            r.material.color = pColor;
+        }
     }
 
     //Timer
@@ -99,6 +138,23 @@ public class SetupLocalPlayer : NetworkBehaviour
         timerLable.text += pName + ": " + pTimer + "\n";
     }
 
+    //Particle
+    [Command]
+    public void CmdSpawnParticle()
+    {
+        RpcSpawnParticle();
+        var particleShoot = Instantiate(particle, this.transform.position, Quaternion.identity) as GameObject;
+        Destroy(particleShoot, 3.0f);
+    }
+
+    [ClientRpc]
+    void RpcSpawnParticle()
+    {
+        if (isServer) return;
+        var particleShoot = Instantiate(particle, this.transform.position, Quaternion.identity) as GameObject;
+        Destroy(particleShoot, 3.0f);
+    }
+
     //Collision
     private void OnTriggerEnter(Collider other)
     {
@@ -109,6 +165,8 @@ public class SetupLocalPlayer : NetworkBehaviour
                 this.SendMessage("Finnish");
 
                 CmdPlayerTimer(Timer.time);
+
+                returnButton.SetActive(true);
             }
         }
         else if(other.tag == "Respawn" && isLocalPlayer){
@@ -126,6 +184,7 @@ public class SetupLocalPlayer : NetworkBehaviour
     void UpdateStates()
     {
         OnChangeName(pName);
+        OnChangeColor(pColor);
     }
 
     public void OnDestroy()
