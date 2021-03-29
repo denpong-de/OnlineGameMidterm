@@ -65,6 +65,17 @@ public class SetupLocalPlayer : NetworkBehaviour
         nameLable.text = pName;
     }
 
+    void UpdateStates()
+    {
+        OnChangeName(pName);
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        Invoke("UpdateStates", 1);
+    }
+
     public void OnDestroy()
     {
         if (nameLable != null)
