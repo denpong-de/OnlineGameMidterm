@@ -33,8 +33,8 @@ public class CarController : MonoBehaviour
 
     private void HandleMotor()
     {
-        frontLeftCollider.motorTorque = moveVec.y * motorForce;
-        frontRightCollider.motorTorque = moveVec.y * motorForce;
+        rearLeftCollider.motorTorque = moveVec.y * motorForce;
+        rearRightCollider.motorTorque = moveVec.y * motorForce;
         ApplyBreaking();
         if (isBreaking)
         {
@@ -48,8 +48,8 @@ public class CarController : MonoBehaviour
 
     private void ApplyBreaking()
     {
-        frontLeftCollider.brakeTorque = currentBreakForce;
-        frontRightCollider.brakeTorque = currentBreakForce;
+        //frontLeftCollider.brakeTorque = currentBreakForce;
+        //frontRightCollider.brakeTorque = currentBreakForce;
         rearLeftCollider.brakeTorque = currentBreakForce;
         rearRightCollider.brakeTorque = currentBreakForce;
     }

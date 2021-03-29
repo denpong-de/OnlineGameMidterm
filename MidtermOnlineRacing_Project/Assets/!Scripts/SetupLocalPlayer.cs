@@ -26,12 +26,15 @@ public class SetupLocalPlayer : NetworkBehaviour
         if (isLocalPlayer)
         {
             GetComponent<CarController>().enabled = true;
+            GetComponent<Timer>().enabled = true;
+
             CameraController.camPos = this.transform.GetChild(2).gameObject;
             CameraController.player = this.gameObject;
         }
         else
         {
             GetComponent<CarController>().enabled = false;
+            GetComponent<Timer>().enabled = false;
         }
     }
 
@@ -81,6 +84,14 @@ public class SetupLocalPlayer : NetworkBehaviour
         if (nameLable != null)
         {
             Destroy(nameLable.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Finish")
+        {
+            this.SendMessage("Finnish");
         }
     }
 }
